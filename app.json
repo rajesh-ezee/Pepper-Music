@@ -1,7 +1,7 @@
 {
     "name": "Pepper-VC",
     "description": "Telegram bot to stream video in telegram VC",
-    "repository": "https://github.com/rajeshrakis/Pepper-Music",
+    "repository": "https://github.com/rajesh-ezee/Pepper-Music",
     "stack": "container",
     "keywords": [
       "telegram",
