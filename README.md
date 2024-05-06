@@ -1,10 +1,10 @@
 # Pepper-Music
 
-![GitHub Repo stars](https://img.shields.io/github/stars/rajeshrakis/Pepper-Music?color=blue&style=flat)
-![GitHub issues](https://img.shields.io/github/issues/rajeshrakis/Pepper-Music)
-![GitHub pull requests](https://img.shields.io/github/issues-pr/rajeshrakis/Pepper-Music)
-![GitHub contributors](https://img.shields.io/github/contributors/rajeshrakis/Pepper-Music?style=flat)
-![GitHub forks](https://img.shields.io/github/forks/rajeshrakis/Pepper-Music?style=flat)
+![GitHub Repo stars](https://img.shields.io/github/stars/rajesh-ezee/Pepper-Music?color=blue&style=flat)
+![GitHub issues](https://img.shields.io/github/issues/rajesh-ezee/Pepper-Music)
+![GitHub pull requests](https://img.shields.io/github/issues-pr/rajesh-ezee/Pepper-Music)
+![GitHub contributors](https://img.shields.io/github/contributors/rajesh-ezee/Pepper-Music?style=flat)
+![GitHub forks](https://img.shields.io/github/forks/rajesh-ezee/Pepper-Music?style=flat)
 
 Telegram bot to stream videos in telegram voicechat for both groups and channels. Supports live streams, YouTube videos and telegram media. With record stream support, Schedule streams, and many more.
 
@@ -13,7 +13,7 @@ Telegram bot to stream videos in telegram voicechat for both groups and channels
 1. `API_ID` : Get From [my.telegram.org](https://my.telegram.org/)
 2. `API_HASH` : Get from [my.telegram.org](https://my.telegram.org)
 3. `BOT_TOKEN` : [@Botfather](https://telegram.dog/BotFather)
-4. `SESSION_STRING` : Generate From here [![GenerateStringName](https://img.shields.io/badge/repl.it-generateStringName-yellowgreen)](https://repl.it/@rajeshrakis/getStringName)
+4. `SESSION_STRING` : Generate From here [![GenerateStringName](https://img.shields.io/badge/repl.it-generateStringName-yellowgreen)](https://repl.it/@rajesh-ezee/getStringName)
 5. `CHAT` : ID of Channel/Group where the bot plays Music.
 
 ## Recommended Optional Vars
@@ -57,13 +57,13 @@ Telegram bot to stream videos in telegram voicechat for both groups and channels
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://dashboard.heroku.com/new?template=https://github.com/rajesh-ezee/Pepper-Music)
 
 ## Deploy to Railway
-<p><a href=https://github.com/rajeshrakis/Pepper-Music/issues/7> <img src="https://img.shields.io/badge/Deploy%20To%20Railway-blueviolet?style=for-the-badge&logo=railway" width="200""/></a></p>
+<p><a href=https://github.com/rajesh-ezee/Pepper-Music/issues/7> <img src="https://img.shields.io/badge/Deploy%20To%20Railway-blueviolet?style=for-the-badge&logo=railway" width="200""/></a></p>
 
  
 ## Deploy to VPS
 
 ```sh
-git clone https://github.com/rajeshrakis/Pepper-Music
+git clone https://github.com/rajesh-ezee/Pepper-Music
 cd Pepper-Music
 pip3 install -r requirements.txt
 # install node js
@@ -101,9 +101,5 @@ Fork the repo and edit as per your needs.
 - [GNU General Public License](./LICENSE)
 
 
-## CREDITS
-
-- [Laky-64](https://github.com/Laky-64) for [py-tgcalls](https://github.com/pytgcalls/pytgcalls)
-- [Dan](https://github.com/delivrance) for [Pyrogram](https://github.com/pyrogram/pyrogram)
 
 
