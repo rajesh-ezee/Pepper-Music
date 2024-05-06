@@ -2,10 +2,10 @@ echo "Cloning Repo...."
 if [ -z $BRANCH ]
 then
   echo "Cloning main branch...."
-  git clone https://github.com/rajeshrakis/Pepper-VC /Pepper-VC
+  git clone https://github.com/rajesh-ezee/Pepper-Music /Pepper-Music
 else
   echo "Cloning $BRANCH branch...."
-  git clone https://github.com/rajeshrakis/Pepper-VC -b $BRANCH /Pepper-VC
+  git clone https://github.com/rajesh-ezee/Pepper-Music -b $BRANCH /Pepper-Music
 fi
 cd /Pepper-VC
 pip install --upgrade pip
