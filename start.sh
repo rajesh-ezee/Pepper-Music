@@ -7,7 +7,7 @@ else
   echo "Cloning $BRANCH branch...."
   git clone https://github.com/rajesh-ezee/Pepper-Music -b $BRANCH /Pepper-Music
 fi
-cd /Pepper-VC
+cd /Pepper-Music
 pip install --upgrade pip
 pip3 install -U -r requirements.txt
 echo "Starting Bot...."
