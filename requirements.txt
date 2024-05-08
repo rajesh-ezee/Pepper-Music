@@ -1,7 +1,5 @@
-###pyrogram==2.0.106
-pyrogram==1.4.16
+pyrogram==2.0.106
 py-tgcalls==0.9.7
-###git+https://github.com/rajesh-ezee/pytgcalls.git
 parse-torrent-name
 tgcrypto
 yt-dlp
@@ -15,5 +13,3 @@ dnspython
 pytz
 apscheduler
 python-dotenv
-
-pytgcalls[pyrogram]
