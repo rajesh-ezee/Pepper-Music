@@ -15,4 +15,5 @@ dnspython
 pytz
 apscheduler
 python-dotenv
+
 pytgcalls[pyrogram]
