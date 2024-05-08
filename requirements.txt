@@ -1,7 +1,7 @@
 ###pyrogram==2.0.106
 pyrogram==1.4.16
 ###py-tgcalls==0.9.7
-py-tgcalls=2.1.0
+py-tgcalls=2.0.1
 ###git+https://github.com/rajesh-ezee/pytgcalls.git
 parse-torrent-name
 tgcrypto
