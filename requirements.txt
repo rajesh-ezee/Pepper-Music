@@ -1,5 +1,4 @@
 ###pyrogram==2.0.106
-git+https://github.com/pyrogram/pyrogram.git
 pyrogram==1.4.16
 py-tgcalls==0.9.7
 git+https://github.com/pytgcalls/pytgcalls.git
