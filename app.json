@@ -1,7 +1,7 @@
 {
-    "name": "Pepper-Music",
+    "name": "SmartVCPlayer",
     "description": "Telegram bot to stream video in telegram VC",
-    "repository": "https://github.com/rajesh-ezee/Pepper-Music",
+    "repository": "https://github.com/bisnuray/SmartVCPlayer",
     "stack": "container",
     "keywords": [
       "telegram",
@@ -17,12 +17,10 @@
     "env": {
       "API_ID": {
         "description": "api_id part of your Telegram API Key from my.telegram.org/apps",
-        "value" : "",
         "required": true
       },
       "API_HASH": {
         "description": "api_hash part of your Telegram API Key from my.telegram.org/apps",
-        "value" : "",
         "required": true
       },
       "BOT_TOKEN": {
@@ -35,12 +33,10 @@
       },
       "CHAT": {
         "description": "ID of Channel or Group where the Bot plays Music",
-        "value" : "1002070065355",
         "required": true
       },
       "LOG_GROUP": {
         "description": "ID of the group to send playlist If CHAT is a Group, if channel then leave blank",
-        "value" : "1001735663878",
         "required": false
       },
       "QUALITY": {
@@ -50,12 +46,10 @@
       },
       "DATABASE_URI": {
         "description": "Mongo DB database URI , get from https://cloud.mongodb.com, even if this is optional, many of functions may not work if this is not set.",
-        "value" : "",
         "required": false
       },
       "ADMINS": {
         "description": "ID of Users who can use Admin commands(for multiple users seperated by space)",
-        "value" : "1281282633",
         "required": true
       },
       "ADMIN_ONLY": {
@@ -73,12 +67,12 @@
       },
       "STARTUP_STREAM": {
         "description": "YouTube live / Direct link to a video / Telegram link to a YouTube playlist.(Read the README for more info.) ",
-        "value": "https://www.youtube.com/live/fnuAChELP6c?si=xH69kSQuN300PaVb",
+        "value": "https://youtu.be/zcrUCvBD16k",
         "required": false
       },
       "REPLY_MESSAGE": {
         "description": "A reply message to those who message the USER account in PM. Make it blank if you do not need this feature.",
-        "value": "Tag Me to https://t.me/HeartBeat_Muzic",
+        "value": "Hey, Iam a bot to play music, not having time to chat with you.",
         "required": false
       }
     },
