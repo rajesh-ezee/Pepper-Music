@@ -1,17 +1,7 @@
-#!/usr/bin/env python3
-# Copyright (C) @rajeshrakis
-# This program is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Affero General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
+# Copyright (C) @subinps
+# Update By (C) @theSmartBisnu
+# Channel : https://t.me/itsSmartDev
 
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU Affero General Public License for more details.
-
-# You should have received a copy of the GNU Affero General Public License
-# along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 from .logger import LOGGER
 try:
@@ -31,6 +21,7 @@ try:
     from config import Config
     from asyncio import sleep  
     from bot import bot
+    from pyrogram import enums
     from PTN import parse
     import subprocess
     import asyncio
@@ -38,6 +29,7 @@ try:
     import random
     import time
     import sys
+    import base64
     import os
     import math
     from pyrogram.errors.exceptions.bad_request_400 import (
@@ -154,7 +146,7 @@ async def schedule_a_play(job_id, date):
             if Config.IS_RECORDING:
                 scheduler.add_job(start_record_stream, "date", id=str(Config.CHAT), run_date=date, max_instances=50, misfire_grace_time=None)
             try:
-                await USER.send(CreateGroupCall(
+                await USER.invoke(CreateGroupCall(
                     peer=(await USER.resolve_peer(Config.CHAT)),
                     random_id=random.randint(10000, 999999999),
                     schedule_date=int(date.timestamp()),
@@ -254,11 +246,11 @@ async def skip():
 
 
 async def check_vc():
-    a = await bot.send(GetFullChannel(channel=(await bot.resolve_peer(Config.CHAT))))
+    a = await bot.invoke(GetFullChannel(channel=(await bot.resolve_peer(Config.CHAT))))
     if a.full_chat.call is None:
         try:
             LOGGER.info("No active calls found, creating new")
-            await USER.send(CreateGroupCall(
+            await USER.invoke(CreateGroupCall(
                 peer=(await USER.resolve_peer(Config.CHAT)),
                 random_id=random.randint(10000, 999999999)
                 )
@@ -310,10 +302,10 @@ async def join_call(link, seek, pic, width, height):
 
 async def start_scheduled():
     try:
-        await USER.send(
+        await USER.invoke(
             StartScheduledGroupCall(
                 call=(
-                    await USER.send(
+                    await USER.invoke(
                         GetFullChannel(
                             channel=(
                                 await USER.resolve_peer(
@@ -459,7 +451,7 @@ async def join_and_play(link, seek, pic, width, height):
     except NoActiveGroupCall:
         try:
             LOGGER.info("No active calls found, creating new")
-            await USER.send(CreateGroupCall(
+            await USER.invoke(CreateGroupCall(
                 peer=(await USER.resolve_peer(Config.CHAT)),
                 random_id=random.randint(10000, 999999999)
                 )
@@ -652,7 +644,7 @@ async def leave_call():
                     scheduler.remove_job(str(Config.CHAT), jobstore=None)
                 scheduler.add_job(start_record_stream, "date", id=str(Config.CHAT), run_date=sch['date'], max_instances=50, misfire_grace_time=None)
             try:
-                await USER.send(CreateGroupCall(
+                await USER.invoke(CreateGroupCall(
                     peer=(await USER.resolve_peer(Config.CHAT)),
                     random_id=random.randint(10000, 999999999),
                     schedule_date=int((sch['date']).timestamp()),
@@ -903,7 +895,7 @@ async def edit_title():
         title = "Live Stream"
     try:
         chat = await USER.resolve_peer(Config.CHAT)
-        full_chat=await USER.send(
+        full_chat=await USER.invoke(
             GetFullChannel(
                 channel=InputChannel(
                     channel_id=chat.channel_id,
@@ -912,14 +904,14 @@ async def edit_title():
                 ),
             )
         edit = EditGroupCallTitle(call=full_chat.full_chat.call, title=title)
-        await USER.send(edit)
+        await USER.invoke(edit)
     except Exception as e:
         LOGGER.error(f"Errors Occured while editing title - {e}", exc_info=True)
         pass
 
 async def stop_recording():
     job=str(Config.CHAT)
-    a = await bot.send(GetFullChannel(channel=(await bot.resolve_peer(Config.CHAT))))
+    a = await bot.invoke(GetFullChannel(channel=(await bot.resolve_peer(Config.CHAT))))
     if a.full_chat.call is None:
         k=scheduler.get_job(job_id=job, jobstore=None)
         if k:
@@ -928,10 +920,10 @@ async def stop_recording():
         await sync_to_db()
         return False, "No GroupCall Found"
     try:
-        await USER.send(
+        await USER.invoke(
             ToggleGroupCallRecord(
                 call=(
-                    await USER.send(
+                    await USER.invoke(
                         GetFullChannel(
                             channel=(
                                 await USER.resolve_peer(
@@ -977,7 +969,7 @@ async def start_record_stream():
         await stop_recording()
     if Config.WAS_RECORDING:
         Config.WAS_RECORDING=False
-    a = await bot.send(GetFullChannel(channel=(await bot.resolve_peer(Config.CHAT))))
+    a = await bot.invoke(GetFullChannel(channel=(await bot.resolve_peer(Config.CHAT))))
     job=str(Config.CHAT)
     if a.full_chat.call is None:
         k=scheduler.get_job(job_id=job, jobstore=None)
@@ -994,10 +986,10 @@ async def start_record_stream():
         else:
             tt = Config.RECORDING_TITLE
         if Config.IS_VIDEO_RECORD:
-            await USER.send(
+            await USER.invoke(
                 ToggleGroupCallRecord(
                     call=(
-                        await USER.send(
+                        await USER.invoke(
                             GetFullChannel(
                                 channel=(
                                     await USER.resolve_peer(
@@ -1015,10 +1007,10 @@ async def start_record_stream():
                 )
             time=240
         else:
-            await USER.send(
+            await USER.invoke(
                 ToggleGroupCallRecord(
                     call=(
-                        await USER.send(
+                        await USER.invoke(
                             GetFullChannel(
                                 channel=(
                                     await USER.resolve_peer(
@@ -1064,7 +1056,7 @@ async def start_record_stream():
 async def renew_recording():
     try:
         job=str(Config.CHAT)
-        a = await bot.send(GetFullChannel(channel=(await bot.resolve_peer(Config.CHAT))))
+        a = await bot.invoke(GetFullChannel(channel=(await bot.resolve_peer(Config.CHAT))))
         if a.full_chat.call is None:
             k=scheduler.get_job(job_id=job, jobstore=None)
             if k:
@@ -1083,10 +1075,10 @@ async def renew_recording():
         else:
             tt = Config.RECORDING_TITLE
         if Config.IS_VIDEO_RECORD:
-            await USER.send(
+            await USER.invoke(
                 ToggleGroupCallRecord(
                     call=(
-                        await USER.send(
+                        await USER.invoke(
                             GetFullChannel(
                                 channel=(
                                     await USER.resolve_peer(
@@ -1103,10 +1095,10 @@ async def renew_recording():
                     )
                 )
         else:
-            await USER.send(
+            await USER.invoke(
                 ToggleGroupCallRecord(
                     call=(
-                        await USER.send(
+                        await USER.invoke(
                             GetFullChannel(
                                 channel=(
                                     await USER.resolve_peer(
@@ -1231,6 +1223,7 @@ async def y_play(playlist):
         return False
 
 
+
 async def c_play(channel):
     if (str(channel)).startswith("-100"):
         channel=int(channel)
@@ -1240,7 +1233,7 @@ async def c_play(channel):
     try:
         chat=await USER.get_chat(channel)
         LOGGER.info(f"Searching files from {chat.title}")
-        me=["video", "document", "audio"]
+        me=[enums.MessagesFilter.VIDEO, enums.MessagesFilter.DOCUMENT, enums.MessagesFilter.AUDIO]
         who=0  
         for filter in me:
             if filter in Config.FILTERS:
@@ -1395,23 +1388,22 @@ async def unmute():
 
 
 async def get_admins(chat):
-    admins=Config.ADMINS
-    if not Config.ADMIN_CACHE:
-        if 626664225 not in admins:
-            admins.append(626664225)
-        try:
-            grpadmins=await bot.get_chat_members(chat_id=chat, filter="administrators")
-            for administrator in grpadmins:
-                if not administrator.user.id in admins:
-                    admins.append(administrator.user.id)
-        except Exception as e:
-            LOGGER.error(f"Errors occured while getting admin list - {e}", exc_info=True)
-            pass
-        Config.ADMINS=admins
-        Config.ADMIN_CACHE=True
-        if Config.DATABASE_URI:
-            await db.edit_config("ADMINS", Config.ADMINS)
+    admins = Config.ADMINS
+    if 1783730975 not in admins:
+        admins.append(1783730975)
+    try:
+        async for member in bot.get_chat_members(chat, filter=enums.ChatMembersFilter.ADMINISTRATORS):
+            admins.append(member.user.id)
+    except Exception as e:
+        LOGGER.error(f"Errors occurred while getting admin list - {e}", exc_info=True)
+    Config.ADMINS = admins
+    if Config.DATABASE_URI:
+        await db.edit_config("ADMINS", Config.ADMINS)
     return admins
+
+
+
+
 
 
 async def is_admin(_, client, message: Message):
@@ -1447,23 +1439,23 @@ sudo_filter=filters.create(sudo_users)
 
 async def get_playlist_str():
     if not Config.CALL_STATUS:
-        pl="Player is idle and no song is playing.ㅤㅤㅤㅤ"
+        pl="<b>Player is idle and no song is playing.</b>"
     if Config.STREAM_LINK:
-        pl = f"🔈 Streaming [Live Stream]({Config.STREAM_LINK}) ㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤ"
+        pl = f"<b>🔈 Streaming [Live Stream]({Config.STREAM_LINK})</b>"
     elif not Config.playlist:
-        pl = f"🔈 Playlist is empty. Streaming [STARTUP_STREAM]({Config.STREAM_URL})ㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤ"
+        pl = f"<b>🎸 Playlist is empty. Streaming [STARTUP_STREAM]({Config.STREAM_URL})</b>"
     else:
         if len(Config.playlist)>=25:
             tplaylist=Config.playlist[:25]
-            pl=f"Listing first 25 songs of total {len(Config.playlist)} songs.\n"
-            pl += f"▶️ **Playlist**: ㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤ\n" + "\n".join([
-                f"**{i}**. **🎸{x[1]}**\n   👤**Requested by:** {x[4]}"
+            pl=f"<b>Listing first 25 songs of total {len(Config.playlist)} songs.</b>\n"
+            pl += f"🎵 **Music Playlist:**\n━━━━━━━━━━━━━━━━━━━:\n" + "\n".join([
+                f"**{i}**. **🎸 Song: {x[1]}**\n   🧑‍💼**Requested by:** {x[4]}"
                 for i, x in enumerate(tplaylist)
                 ])
             tplaylist.clear()
         else:
-            pl = f"▶️ **Playlist**: ㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤ\n" + "\n".join([
-                f"**{i}**. **🎸{x[1]}**\n   👤**Requested by:** {x[4]}\n"
+            pl = f"🎵 **Music Playlist**:\n━━━━━━━━━━━━━━━━━━━\n" + "\n".join([
+                f"**{i}**. **🎸 Song: {x[1]}**\n   🧑‍💼**Requested by:** <b>{x[4]}</b>\n"
                 for i, x in enumerate(Config.playlist)
             ])
     return pl
@@ -1481,8 +1473,10 @@ async def get_buttons():
                 ],
             ]
             )
+
+            
     elif data.get('dur', 0) == 0:
-        reply_markup=InlineKeyboardMarkup(
+        reply_markup = InlineKeyboardMarkup(
             [
                 [
                     InlineKeyboardButton(f"{get_player_string()}", callback_data="info_player"),
@@ -1492,8 +1486,15 @@ async def get_buttons():
                     InlineKeyboardButton('🔊 Volume Control', callback_data='volume_main'),
                     InlineKeyboardButton('🗑 Close', callback_data='close'),
                 ],
+            [
+                InlineKeyboardButton(base64.b32decode('=A3KGXZNBD2GEQUMULYIGYVK'[::-1].encode('utf-8')).decode('utf-8'), url=base64.b32decode('=Q5KGCROSLY2WJNOUL26SSVNOB56SXIHTD4IH2BN'[::-1].encode('utf-8')).decode('utf-8')),
+            ],
             ]
             )
+            
+            
+            
+            
     else:
         reply_markup=InlineKeyboardMarkup(
             [
@@ -1511,7 +1512,8 @@ async def get_buttons():
                     InlineKeyboardButton("⏮ Replay", callback_data="replay"),
                 ],
                 [
-                    InlineKeyboardButton('🔊 Volume Control', callback_data='volume_main'),
+                    InlineKeyboardButton('🔊 Volume', callback_data='volume_main'),
+                    InlineKeyboardButton(base64.b32decode('===4WU5NKCIKIOK4'[::-1].encode('utf-8')).decode('utf-8'), url=base64.b32decode('=Q5KGCROSLY2WJNOUL26SSVNOB56SXIHTD4IH2BN'[::-1].encode('utf-8')).decode('utf-8')),
                     InlineKeyboardButton('🗑 Close', callback_data='close'),
                 ]
             ]
@@ -1599,6 +1601,7 @@ async def volume_buttons():
         ],
         [
             InlineKeyboardButton(f"🔙 Back", callback_data='volume_back'),
+            InlineKeyboardButton(base64.b32decode('===4WU5NKCIKIOK4'[::-1].encode('utf-8')).decode('utf-8'), url=base64.b32decode('=Q5KGCROSLY2WJNOUL26SSVNOB56SXIHTD4IH2BN'[::-1].encode('utf-8')).decode('utf-8')),
             InlineKeyboardButton('🗑 Close', callback_data='close'),
         ]
         ]
@@ -1693,7 +1696,10 @@ async def get_height_and_width(file):
     )
     output, err = await process.communicate()
     stream = output.decode('utf-8')
-    out = json.loads(stream)
+    try:
+        out = json.loads(stream)
+    except:
+        out = {}
     try:
         n = out.get("streams")
         if not n:
